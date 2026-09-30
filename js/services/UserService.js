@@ -5,6 +5,9 @@ import { HttpError } from '../core/HttpError.js';
  * Não conhece DOM nem localStorage.
  */
 export class UserService {
+  #createdUsers = [];
+  #createdUserCount = 0;
+
   constructor(http) { this.http = http; }
 
   async list({ signal } = {}) {
@@ -13,12 +16,12 @@ export class UserService {
       cacheTtl: 30_000,
       query: { _limit: 20 },
     });
-    if (!Array.isArray(data)) {
+    if (!Array.isArray(data) || data.some((user) => !user || typeof user !== 'object' || Array.isArray(user))) {
       throw new HttpError('A API retornou uma lista de usuários inválida', {
         status: 502, method: 'GET', url: '/users', payload: data,
       });
     }
-    return data;
+    return [...this.#createdUsers, ...data];
   }
 
   async create({ name, email, company }) {
@@ -32,6 +35,14 @@ export class UserService {
         status: 502, method: 'POST', url: '/users', payload: data,
       });
     }
-    return data;
+    const createdUser = {
+      ...data,
+      id: `local-${++this.#createdUserCount}`,
+      name: name.trim(),
+      email: email.trim(),
+      company: { ...data.company, name: company.trim() },
+    };
+    this.#createdUsers.unshift(createdUser);
+    return createdUser;
   }
 }

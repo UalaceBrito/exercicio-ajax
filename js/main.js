@@ -50,7 +50,7 @@ import { HttpError } from './core/HttpError.js';
     onSubmit: async (data) => {
       try {
         const criado = await service.create(data);
-        toast.success(`Usuário "${criado.name}" cadastrado!`);
+        toast.success(`"${criado.name}" entrou na lista desta sessão. A API de demonstração não persiste cadastros.`);
         formView.reset();
         // Revalidação: força recarregar sem cache
         http.cache.clear();

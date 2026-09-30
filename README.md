@@ -13,7 +13,7 @@ assíncronas. Os dados da lista são carregados por `GET` e o formulário envia 
 
 ## Recursos
 - Carregamento de usuários por AJAX assim que a página abre e pelo botão **Atualizar**
-- Cadastro assíncrono com validação de formulário e atualização da lista
+- Cadastro assíncrono com validação, busca imediata na lista durante a sessão e aviso explícito de persistência
 - Alternância entre Fetch e XHR pela interface
 - Timeout, cancelamento, retry exponencial com jitter e cache GET com TTL
 - Erros HTTP tipados e validação das respostas recebidas da API
@@ -37,19 +37,16 @@ por HTTP. A aplicação precisa de acesso à internet para consultar a API.
 
 O exercício usa [JSONPlaceholder](https://jsonplaceholder.typicode.com), endpoint `/users`.
 É uma API pública de demonstração: o `POST` retorna uma resposta simulada, mas não persiste
-os dados. Portanto, usuários enviados pelo formulário não serão mantidos em recargas ou
-consultas posteriores.
+os dados. Para que a demonstração continue coerente após o `POST` e durante atualizações da
+lista na mesma sessão, o serviço mantém os novos registros em memória. A interface informa
+que eles são temporários; ao recarregar a página, a API não os devolverá.
 
-## Publicar a entrega no GitHub
+## Entrega no GitHub
 
-Depois de configurar o endereço do repositório fornecido para a atividade:
+O exercício está publicado na branch `exercicio_ajax`. Para obter uma cópia dessa branch:
 
 ```bash
-git switch -c exercicio_ajax
-git add .
-git commit -m "Implementa exercício AJAX robusto"
-git push -u origin exercicio_ajax
+git clone --branch exercicio_ajax https://github.com/UalaceBrito/exercicio-ajax.git
 ```
 
-Envie o link do repositório na plataforma após confirmar que a branch `exercicio_ajax` está
-publicada.
+Envie o link do repositório pela plataforma da atividade.

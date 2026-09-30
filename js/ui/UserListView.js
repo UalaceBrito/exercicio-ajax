@@ -1,6 +1,6 @@
 import { logger } from '../utils/logger.js';
 
-const ESTADOS = ['idle', 'loading', 'erro', 'vazio', 'lista'];
+const ESTADOS = ['idle', 'loading', 'erro', 'vazio', 'semResultados', 'lista'];
 
 export class UserListView {
   constructor() {
@@ -9,6 +9,7 @@ export class UserListView {
       loading:  document.getElementById('estado-loading'),
       erro:     document.getElementById('estado-erro'),
       vazio:    document.getElementById('estado-vazio'),
+      semResultados: document.getElementById('estado-sem-resultados'),
       lista:    document.getElementById('lista-usuarios'),
       busca:    document.getElementById('input-busca'),
     };
@@ -54,13 +55,26 @@ export class UserListView {
     const lista = this.els.lista;
     lista.innerHTML = '';
 
-    const filtrados = this._filtro
-      ? this._usuarios.filter((u) =>
-          u.name?.toLowerCase().includes(this._filtro) ||
-          u.email?.toLowerCase().includes(this._filtro))
+    const normalizar = (value) => String(value ?? '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase('pt-BR');
+    const termo = normalizar(this._filtro);
+    const filtrados = termo
+      ? this._usuarios.filter((u) => u && (
+          normalizar(u.name).includes(termo) ||
+          normalizar(u.email).includes(termo)))
       : this._usuarios;
 
-    if (!filtrados.length) { this.#setEstado(this._usuarios.length ? 'vazio' : 'vazio'); return; }
+    if (!filtrados.length) {
+      if (this._usuarios.length && this.els.semResultados) {
+        this.els.semResultados.textContent = `Nenhum resultado para "${this._filtro}".`;
+        this.#setEstado('semResultados');
+      } else {
+        this.#setEstado('vazio');
+      }
+      return;
+    }
 
     const frag = document.createDocumentFragment();
     for (const u of filtrados) {

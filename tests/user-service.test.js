@@ -31,6 +31,7 @@ test('UserService reports an invalid list response instead of disguising it as e
 test('UserService trims submitted fields and validates the created user response', async () => {
   let payload;
   const service = new UserService({
+    async get() { return { data: [{ id: 1, name: 'Ada' }] }; },
     async post(path, body) {
       payload = { path, body };
       return { data: { id: 3, name: body.name, email: body.email } };
@@ -51,7 +52,13 @@ test('UserService trims submitted fields and validates the created user response
       company: { name: 'Analytical Engines' },
     },
   });
-  assert.equal(user.id, 3);
+  assert.equal(user.id, 'local-1');
+  assert.deepEqual(await service.list(), [{
+    id: 'local-1',
+    name: 'Ada Lovelace',
+    email: 'ada@example.test',
+    company: { name: 'Analytical Engines' },
+  }, { id: 1, name: 'Ada' }]);
 });
 
 test('UserService reports an invalid created-user response', async () => {

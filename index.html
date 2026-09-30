@@ -57,7 +57,8 @@
         <span class="spinner" aria-hidden="true"></span> Carregando…
       </div>
       <div id="estado-erro" class="estado estado--erro hidden" role="alert"></div>
-      <div id="estado-vazio" class="estado hidden">Nenhum usuário encontrado.</div>
+      <div id="estado-vazio" class="estado hidden" role="status">A API não retornou usuários.</div>
+      <div id="estado-sem-resultados" class="estado hidden" role="status" aria-live="polite"></div>
 
       <ul id="lista-usuarios" class="lista" aria-live="polite"></ul>
     </section>
