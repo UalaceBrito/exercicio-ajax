@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercício AJAX · Arquitetura Robusta</title>
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Exercício AJAX</h1>
+    <div class="topbar__controls">
+      <label class="switch">
+        <input type="checkbox" id="toggle-adapter" />
+        <span>Usar XMLHttpRequest</span>
+      </label>
+      <button id="btn-refresh" class="btn btn--ghost" type="button">↻ Atualizar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Formulário: POST via AJAX -->
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">Novo usuário</h2>
+      <form id="form-usuario" novalidate>
+        <div class="field">
+          <label for="input-nome">Nome *</label>
+          <input id="input-nome" name="name" type="text" required minlength="3" autocomplete="name" aria-describedby="error-name" />
+          <small id="error-name" class="field__error" data-error-for="name"></small>
+        </div>
+
+        <div class="field">
+          <label for="input-email">E-mail *</label>
+          <input id="input-email" name="email" type="email" required autocomplete="email" aria-describedby="error-email" />
+          <small id="error-email" class="field__error" data-error-for="email"></small>
+        </div>
+
+        <div class="field">
+          <label for="input-empresa">Empresa</label>
+          <input id="input-empresa" name="company" type="text" autocomplete="organization" />
+        </div>
+
+        <button type="submit" class="btn btn--primary" id="btn-submit">Cadastrar</button>
+      </form>
+    </section>
+
+    <!-- Lista: GET via AJAX -->
+    <section class="card" aria-labelledby="list-title">
+      <header class="card__header">
+        <h2 id="list-title">Usuários</h2>
+        <input id="input-busca" type="search" placeholder="Filtrar por nome/e-mail…" />
+      </header>
+
+      <div id="estado-idle" class="estado">Clique em <strong>Atualizar</strong> para carregar.</div>
+      <div id="estado-loading" class="estado estado--loading hidden" role="status" aria-live="polite">
+        <span class="spinner" aria-hidden="true"></span> Carregando…
+      </div>
+      <div id="estado-erro" class="estado estado--erro hidden" role="alert"></div>
+      <div id="estado-vazio" class="estado hidden">Nenhum usuário encontrado.</div>
+
+      <ul id="lista-usuarios" class="lista" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

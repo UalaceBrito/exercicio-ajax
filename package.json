@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-ajax",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check js/main.js && node --check js/core/Cache.js && node --check js/core/FetchAdapter.js && node --check js/core/HttpClient.js && node --check js/core/HttpError.js && node --check js/core/XhrAdapter.js && node --check js/config/constants.js && node --check js/services/UserService.js && node --check js/ui/ToastView.js && node --check js/ui/UserFormView.js && node --check js/ui/UserListView.js && node --check js/utils/dom.js && node --check js/utils/logger.js && node --check js/utils/retry.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
